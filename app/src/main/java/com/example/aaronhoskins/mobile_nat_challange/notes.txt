@@ -1,0 +1,39 @@
+**********************************************************************
+**********************************************************************
+**                                                                  **
+**               Mobile NAT Challenge                               **
+**   Programmer: Aaron Hoskins                                      **
+** Date Created: 09/01/2017                                         **
+**    Last Edit: 09/01/2017                                         **
+**                                                                  **
+**********************************************************************
+**********************************************************************
+
+    Resources-->
+        http://www.wunderground.com/weather/api
+
+
+
+    Functionality:
+        1. When in the foreground, should fetch the weather
+        2. If user has not entered zip code, prompt them to.
+
+    Zip Code Entry:
+        1. User should be able to enter the Zip code as prescribed by
+             the design.
+        2. User able to switch between Imperial and metric systems.
+
+    Hourly Weather Display
+        Two Main Sections
+            1. Current Conditions
+                -- If below 60, use cool color specified by designer
+            2. Hourly Forecast:
+                -- Data from API grouped into days
+                -- Highest temp for the day should have a warm tint
+                        -- first occur. if tie
+                -- Coolest temp for the day should have a cool tint
+                        -- first occur. if tie
+        Use the remote URL for the weather icon
+
+    Language Used:
+        Java
