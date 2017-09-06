@@ -76,7 +76,7 @@ public class CurrentObservation implements Serializable
     private String windMph;
     @SerializedName("wind_gust_mph")
     @Expose
-    private Integer windGustMph;
+    private String windGustMph;
     @SerializedName("wind_kph")
     @Expose
     private String windKph;
@@ -97,19 +97,19 @@ public class CurrentObservation implements Serializable
     private String dewpointString;
     @SerializedName("dewpoint_f")
     @Expose
-    private Integer dewpointF;
+    private String dewpointF;
     @SerializedName("dewpoint_c")
     @Expose
-    private Integer dewpointC;
+    private String dewpointC;
     @SerializedName("heat_index_string")
     @Expose
     private String heatIndexString;
     @SerializedName("heat_index_f")
     @Expose
-    private Integer heatIndexF;
+    private String heatIndexF;
     @SerializedName("heat_index_c")
     @Expose
-    private Integer heatIndexC;
+    private String heatIndexC;
     @SerializedName("windchill_string")
     @Expose
     private String windchillString;
@@ -354,11 +354,11 @@ public class CurrentObservation implements Serializable
         this.windMph = windMph;
     }
 
-    public Integer getWindGustMph() {
+    public String getWindGustMph() {
         return windGustMph;
     }
 
-    public void setWindGustMph(Integer windGustMph) {
+    public void setWindGustMph(String windGustMph) {
         this.windGustMph = windGustMph;
     }
 
@@ -410,19 +410,19 @@ public class CurrentObservation implements Serializable
         this.dewpointString = dewpointString;
     }
 
-    public Integer getDewpointF() {
+    public String getDewpointF() {
         return dewpointF;
     }
 
-    public void setDewpointF(Integer dewpointF) {
+    public void setDewpointF(String dewpointF) {
         this.dewpointF = dewpointF;
     }
 
-    public Integer getDewpointC() {
+    public String getDewpointC() {
         return dewpointC;
     }
 
-    public void setDewpointC(Integer dewpointC) {
+    public void setDewpointC(String dewpointC) {
         this.dewpointC = dewpointC;
     }
 
@@ -434,19 +434,19 @@ public class CurrentObservation implements Serializable
         this.heatIndexString = heatIndexString;
     }
 
-    public Integer getHeatIndexF() {
+    public String getHeatIndexF() {
         return heatIndexF;
     }
 
-    public void setHeatIndexF(Integer heatIndexF) {
+    public void setHeatIndexF(String heatIndexF) {
         this.heatIndexF = heatIndexF;
     }
 
-    public Integer getHeatIndexC() {
+    public String getHeatIndexC() {
         return heatIndexC;
     }
 
-    public void setHeatIndexC(Integer heatIndexC) {
+    public void setHeatIndexC(String heatIndexC) {
         this.heatIndexC = heatIndexC;
     }
 

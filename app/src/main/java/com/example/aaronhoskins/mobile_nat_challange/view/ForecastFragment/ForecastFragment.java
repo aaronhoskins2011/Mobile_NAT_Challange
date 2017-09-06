@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.aaronhoskins.mobile_nat_challange.R;
+import com.example.aaronhoskins.mobile_nat_challange.model.ForecastDataDisplayLists;
 import com.example.aaronhoskins.mobile_nat_challange.model.forecast.ForecastProfile;
 import com.example.aaronhoskins.mobile_nat_challange.model.forecast.HourlyForecast;
 
@@ -35,13 +36,7 @@ public class ForecastFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.ItemAnimator itemAnimator;
     ForecastRecyleViewAdaptor forecastRecyleVieAdaptor;
-
     private static final String ARG_PARAM1 = "param1";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-
-
     private OnFragmentInteractionListener mListener;
 
     public ForecastFragment() {
@@ -55,7 +50,6 @@ public class ForecastFragment extends Fragment {
      * @param param1 Parameter 1.
      * @return A new instance of fragment ForecastFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ForecastFragment newInstance(ForecastProfile param1) {
         ForecastFragment fragment = new ForecastFragment();
         Bundle args = new Bundle();
@@ -73,7 +67,7 @@ public class ForecastFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             forecastProfile = (ForecastProfile) getArguments().getSerializable(ARG_PARAM1);
-            initKeyValueLists();
+            initArrays();
         }
     }
 
@@ -123,44 +117,17 @@ public class ForecastFragment extends Fragment {
     public OnFragmentInteractionListener getmListener() {
         return mListener;
     }
-    public void initKeyValueLists(){
-        String day = null;
 
-        for(HourlyForecast forecast: forecastProfile.getHourlyForecast()){
-            if(day == null){day = forecast.getFCTTIME().getWeekdayName();}
-            if(day.equals(forecast.getFCTTIME().getWeekdayName())) {
-                temps.add(Double.parseDouble(forecast.getTemp().getEnglish()));
-            } else {
-                double curHiTemp = -1000.00;
-                double curLoTemp = 1000.00;
-                for(Double d : temps){
-                    if(d < curLoTemp){curLoTemp = d;}
-                    if(d > curHiTemp){curHiTemp = d;}
-                }
-                Log.d(TAG_FORCAST_FRAGMENT, "onCreate: Day: " + day + " Hi Temp: " +  curHiTemp + " Lo Temp: " + curLoTemp);
-                daysList.add(day);
-                day = forecast.getFCTTIME().getWeekdayName();
-                HiTemps.add(curHiTemp);
-                LoTemps.add(curLoTemp);
-                temps.clear();
-
-            }
-        }
-    }
+   public void initArrays(){
+       ForestFragmentPresenter forestFragmentPresenter = new ForestFragmentPresenter();
+       ForecastDataDisplayLists forecastDataDisplayLists;
+       forecastDataDisplayLists = forestFragmentPresenter.initKeyValueLists(forecastProfile);
+       HiTemps = forecastDataDisplayLists.getHiTemps();
+       LoTemps = forecastDataDisplayLists.getLoTemps();
+       daysList = forecastDataDisplayLists.getDaysList();
+   }
 
 
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onForecastInteraction(Uri uri);

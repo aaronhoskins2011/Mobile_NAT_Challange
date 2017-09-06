@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 
 import com.example.aaronhoskins.mobile_nat_challange.R;
 import com.example.aaronhoskins.mobile_nat_challange.data.remote.WeatherDataHandler;
+import com.example.aaronhoskins.mobile_nat_challange.model.ThreadObjectReturns;
 import com.example.aaronhoskins.mobile_nat_challange.model.conditions.WeatherProfile;
 import com.example.aaronhoskins.mobile_nat_challange.model.forecast.ForecastProfile;
 import com.example.aaronhoskins.mobile_nat_challange.view.CurrentConditionsFragment.CurrentConditionsFragment;
@@ -22,13 +23,14 @@ import static com.example.aaronhoskins.mobile_nat_challange.data.local.Constants
 import static com.example.aaronhoskins.mobile_nat_challange.data.local.Constants.PASS_ZIP_CODE_STRING;
 
 public class MainActivity extends AppCompatActivity implements CurrentConditionsFragment.OnFragmentInteractionListener, ForecastFragment.OnFragmentInteractionListener {
-   WeatherProfile weatherProfile;
+    ThreadObjectReturns info;
     WeatherDataHandler wdh;
     ForecastProfile forecastProfile;
     FrameLayout currentConditionsFrame;
     FrameLayout forecastFrame;
     EditText etZipCode;
-    String zipCode = "37148";
+    String zipCode = "30315";
+    MainActivityPresenter mainActivityPresenter = new MainActivityPresenter();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,56 +40,18 @@ public class MainActivity extends AppCompatActivity implements CurrentConditions
        if(!(getIntent().getStringExtra(PASS_ZIP_CODE_STRING) == null)){
            zipCode = getIntent().getStringExtra(PASS_ZIP_CODE_STRING);
        }
-
-        Thread dataThread = new Thread(initWeatherProfileRunnable(zipCode));
-        Thread arrayListThread = new Thread(initForecastProfileRunnable(zipCode));
-        dataThread.start();
-        arrayListThread.start();
-        try {
-            dataThread.join();
-            arrayListThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
+        info = mainActivityPresenter.initInformation(zipCode);
         initFragmentsForActivity();
-
     }
 
-    Runnable initWeatherProfileRunnable(final String zipCode){
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    weatherProfile = wdh.getWeatherData(zipCode);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        return runnable;
-    }
-    Runnable initForecastProfileRunnable (final String zipCode){
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    forecastProfile = wdh.getForecastData(zipCode);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        return runnable;
-    }
+
     public void initFragmentsForActivity(){
         initForecastFragment();
         initCurrentConditionFragment();
     }
     public void initForecastFragment(){
         forecastFrame = (FrameLayout)findViewById(R.id.flForecast);
-        ForecastFragment forecastFragment = ForecastFragment.newInstance(forecastProfile);
+        ForecastFragment forecastFragment = ForecastFragment.newInstance(info.getForecastProfile());
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.flForecast,forecastFragment ,FORECAST_FRAG_ID)
@@ -95,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements CurrentConditions
     }
     public void initCurrentConditionFragment(){
         currentConditionsFrame = (FrameLayout)findViewById(R.id.flCurrentConditions);
-        CurrentConditionsFragment currentConditionsFragment = CurrentConditionsFragment.newInstance(weatherProfile);
+        CurrentConditionsFragment currentConditionsFragment = CurrentConditionsFragment.newInstance(info.getWeatherProfile());
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.flCurrentConditions,currentConditionsFragment ,CURRENT_CONDITIONS_FRAG_ID)
